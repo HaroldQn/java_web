@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servicios.conectaDB;
+import test.Encriptamiento;
 
 /**
  *
@@ -82,22 +83,29 @@ public class LoginServlet extends HttpServlet {
         
         
         
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        String usernameEnviado = request.getParameter("username");
+        String passwordEnviado = request.getParameter("password");
         
         try( Connection conDB = conectaDB.getConection() ){
-            String consulta = "select * from usuarios where usuario = ? and clave = ?";
+            String consulta = "select * from usuarios where usuario = ?";
             PreparedStatement envio = conDB.prepareStatement(consulta);
-            envio.setString(1, username);
-            envio.setString(2, password);
+            envio.setString(1, usernameEnviado);
             
             ResultSet rs = envio.executeQuery();
             if(rs.next()){
-                HttpSession sesion = request.getSession(true);
-                sesion.setAttribute("user", rs.getString("nombre"));  
-                response.sendRedirect("dashboard.jsp");
+                String passwordBD =  rs.getString("clave");
+                boolean isLogin = Encriptamiento.verificar(passwordEnviado, passwordBD);
+                if(isLogin == true){
+                    HttpSession sesion = request.getSession(true);
+                    sesion.setAttribute("user", rs.getString("nombre"));  
+                    response.sendRedirect("dashboard.jsp");
+                }else{
+                    request.setAttribute("error", "Contraseña incorrecta.");
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+                
+                }
             }else{
-                request.setAttribute("error", "Usuario o contraseña incorrectos.");
+                request.setAttribute("error", "Usuario no existe");
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
             

@@ -7,13 +7,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     HttpSession sesion = request.getSession(false);
-    if (sesion == null || sesion.getAttribute("user") == null){
+    if (sesion == null || sesion.getAttribute("user") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
 %>
 <!DOCTYPE html>
-<html>
+<html class="bg-white">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Dashboard</title>
@@ -32,7 +32,7 @@
             
             
             
-            <a class="btn btn-danger" href="LogoutServlet">Cerrar sesión</a>
+            <btn class="btn btn-danger" href="LogoutServlet">Cerrar sesión</btn>
         </div>
     </body>
 </html>
