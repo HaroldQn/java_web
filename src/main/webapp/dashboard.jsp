@@ -25,14 +25,15 @@
         <div class="container">
             
             <h1>Bienvenido <%= session.getAttribute("user") %></h1>
-
-            <p>Información para usuarios que iniciaron sesión</p>
             <hr>
+
+            <% response.sendRedirect("ControladorPrincipal?accion=paginaInicial"); %>
+            <!-- FORMULARIO DE MATERIALES -->
             
             
             
-            
-            <btn class="btn btn-danger" href="LogoutServlet">Cerrar sesión</btn>
+            <hr>
+            <a class="btn btn-danger" href="LogoutServlet">Cerrar sesión</a>
         </div>
     </body>
 </html>

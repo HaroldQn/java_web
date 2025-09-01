@@ -4,9 +4,17 @@
         <servlet-name>ServletPrincipal</servlet-name>
         <servlet-class>controladores.ServletPrincipal</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorPrincipal</servlet-name>
+        <servlet-class>controladores.ControladorPrincipal</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletPrincipal</servlet-name>
         <url-pattern>/ServletPrincipal</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorPrincipal</servlet-name>
+        <url-pattern>/ControladorPrincipal</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
