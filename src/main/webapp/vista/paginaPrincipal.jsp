@@ -6,15 +6,19 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html class="bg-white">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Pagina Principal</title>
+        <title>JSP Pagee</title>
+        
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     </head>
     <body>
-        <h1>Pagina Pricipal!</h1>
-        
-        <h4>Registro de Material</h4>
+        <div class="container">
+            <h1>Pagina Pricipal!</h1>
+
+            <h4>Registro de Material</h4>
             <form>
                 <div class="row">
                     <div class="col-md-04"></div>
@@ -25,13 +29,14 @@
                         <input type="number" class="form-control" name="cantidad" placeholder="">
                         <label>Categoria</label>
                         <select class="form-select" name="categoria" >
-                            
+
                             <option>SELECIONE</option>
                         </select>
                     </div>
                     <div class="col-md-04"></div>
                 </div>
-                
+
             </form>
+        </div>
     </body>
 </html>

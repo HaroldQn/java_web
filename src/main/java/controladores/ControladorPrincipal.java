@@ -28,10 +28,11 @@ public class ControladorPrincipal extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("ENTRO ");
         String accion = request.getParameter("accion");
         
-        if(accion.equals("paginaInicial")){
-            request.getRequestDispatcher("./vista/paginaInicial.jsp").forward(request, response);
+        if(accion.equals("paginaPrincipal")){
+            request.getRequestDispatcher("./vista/paginaPrincipal.jsp").forward(request, response);
         }
     }
 
@@ -47,8 +48,9 @@ public class ControladorPrincipal extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
+        processRequest(request, response);
     }
+
 
     /**
      * Handles the HTTP <code>POST</code> method.
