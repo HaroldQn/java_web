@@ -27,7 +27,7 @@ public class ControladorPrincipal extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("ENTRO ");
+        System.out.println("ENTRO OTRA VEZ");
         
         String accion = request.getParameter("accion");
         
