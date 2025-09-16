@@ -28,6 +28,7 @@ public class ControladorPrincipal extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("ENTRO ");
+        
         String accion = request.getParameter("accion");
         
         if(accion.equals("paginaPrincipal")){
