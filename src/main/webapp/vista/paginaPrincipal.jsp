@@ -4,6 +4,7 @@
     Author     : LAB-USR-LNORTE
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="bg-white">
@@ -17,38 +18,39 @@
     </head>
     <body>
         <div class="container">
-            <h1>Pagina Pricipal!</h1>
+            <h1 class="text-center">Pagina Pricipal!</h1>
 
-            <h4>Registro de Material</h4>
-            <form action="<%= request.getContextPath() %>/ControladorPrincipal" method="POST" id="formMateriales">
+            <h4 class="text-center">Registro de Material</h4>
+            <form action="<%= request.getContextPath() %>/controladorMateriales" method="POST" id="formMateriales">
                 <div class="row">
-                    <div class="col-md-04"></div>
-                    <div class="col-md-04">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
                         <label>Nombre</label>
-                        <input type="text" class="form-control" name="nombre" placeholder="">
+                        <input type="text" class="form-control" value="${nombre}" name="nombre" required>
                         <label>Cantidad</label>
-                        <input type="number" class="form-control" name="cantidad" placeholder="">
+                        <input type="number" class="form-control" value="${cantidad}" name="cantidad" required>
                         <label>Categoria</label>
-                        <select class="form-select" name="categoria" >
-
-                            <option>SELECIONE</option>
+                        <select class="form-select" name="categoria" required>
+                            <option value="">------Seleccione------</option>
+                            <c:forEach var="cat" items="${listaCategoria}">
+                                <option value="${cat.idCategoria}">${cat.nombre}</option>
+                            </c:forEach>
+                             
+                            
                         </select>
                     </div>
-                    <div class="col-md-04"></div>
+                    <div class="col-md-4"></div>
                 </div>
 
             </form>
-
-            <!-- <c:if test ="${requestScope.mensaje != null}">-->
-                <script type="module">
-                    import { mostrarAlerta } from '<%= request.getContextPath() %>/js/listaMateriales.js';
-                    mostrarAlerta('success', 'Hola');
-                </script>
-            <!-- </c:if>-->
-
-
-
-
+            
         </div>
+    <!-- <c:if test ="${requestScope.mensaje != null}"> 
+        <script type="module">
+            import { mostrarAlerta } from '<%= request.getContextPath() %>/js/listaMateriales.js';
+            mostrarAlerta('success', 'Hola');
+        </script>
+    </c:if> -->
+            
     </body>
 </html>

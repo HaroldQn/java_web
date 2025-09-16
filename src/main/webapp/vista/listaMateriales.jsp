@@ -4,6 +4,7 @@
     Author     : efrai
 --%>
 
+<%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,37 +13,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
-            Connecion cnx = new Connecion().getConnection();
-            PreparedStatement ps;
-            ResultSet rs;
-
-            String cadenaSql = "";
-
-            List<Material> lista = null;
-
-            try{
-                ps = cnx.prepareStatement(cadenaSql);
-                rs = ps.executeQuery();
-                lista = new ArrayList<>();
-                while(rs.next()){
-                    Material m = new Material(
-                        rs.getInt("id"),
-                        rs.getString("nombre"),
-                        rs.getInt("cantidad"),
-                        rs.getString("categoria"),
-                        new Categoria(rs.getInt("id_categoria"), rs.getString("nombre_categoria")));
-                    lista.add(m);
-                }
-                rs.close();
-                ps.close();
-                cnx.close();
-            }catch(SQLException e){
-                e.printStackTrace();
-
-            }
-            request.setAttribute("listaMateriales", lista);
-        %>
 
         <div class="container">
             <table class="tablaRep">
@@ -77,7 +47,7 @@
                     </tr>
                 </tfoot>
             </table>
-    </div>
+        </div>
 
 
     </body>
