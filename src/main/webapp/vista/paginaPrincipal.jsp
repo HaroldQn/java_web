@@ -34,9 +34,7 @@
                             <option value="">------Seleccione------</option>
                             <c:forEach var="cat" items="${listaCategoria}">
                                 <option value="${cat.idCategoria}">${cat.nombre}</option>
-                            </c:forEach>
-                             
-                            
+                            </c:forEach>  
                         </select>
                     </div>
                     <div class="col-md-4"></div>
