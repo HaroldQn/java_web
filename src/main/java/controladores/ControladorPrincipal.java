@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.dao.CategoriaDAO;
+import modelo.dao.MaterialDAO;
 import modelo.dto.Categoria;
+import modelo.dto.Material;
 
 /**
  *
@@ -35,9 +37,14 @@ public class ControladorPrincipal extends HttpServlet {
         String accion = request.getParameter("accion");
         
         if(accion.equals("paginaPrincipal")){
+            //Categorias
             List <Categoria> listCat = new CategoriaDAO().getList();
-            System.out.println(listCat);
             request.setAttribute("listaCategoria", listCat);
+            
+            //Materiales
+            List<Material> listMat = new MaterialDAO().getListMateriales();
+            request.setAttribute("listaMateriales", listMat);
+    
             request.getRequestDispatcher("./vista/paginaPrincipal.jsp").forward(request, response);
         }
     }

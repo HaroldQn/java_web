@@ -50,6 +50,6 @@
         </script>
     </c:if> -->
             
-    <%@include file="listaMateriales.jsp" %>
+    <jsp:include page="listaMateriales.jsp" />
     </body>
 </html>
