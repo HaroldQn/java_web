@@ -11,6 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.dao.MaterialDAO;
+import modelo.dto.Categoria;
+import modelo.dto.Material;
 
 /**
  *
@@ -71,7 +74,25 @@ public class controladorMateriales extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+            String nombre = request.getParameter("nombre");
+            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
+            int idCategoria = Integer.parseInt(request.getParameter("categoria"));
+
+            Material nuevo = new Material();
+            nuevo.setNombre(nombre);
+            nuevo.setCantidad(cantidad);
+            nuevo.setCategoria(new Categoria(idCategoria, null));
+
+            MaterialDAO dao = new MaterialDAO();
+            boolean exito = dao.registrarMaterial(nuevo);
+            
+            request.setAttribute("resultado", exito);
+            if (exito) {
+                response.sendRedirect(request.getContextPath() + "/ControladorPrincipal?accion=paginaPrincipal&resultado=success");            
+            }else{
+                response.sendRedirect(request.getContextPath() + "/ControladorPrincipal?accion=paginaPrincipal&resultado=error");                       
+            }
+
     }
 
     /**

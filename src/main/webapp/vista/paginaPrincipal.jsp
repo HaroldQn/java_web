@@ -36,6 +36,9 @@
                                 <option value="${cat.idCategoria}">${cat.nombre}</option>
                             </c:forEach>  
                         </select>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary mt-3 ">Agregar</button>
+                        </div>
                     </div>
                     <div class="col-md-4"></div>
                 </div>
@@ -43,12 +46,16 @@
             </form>
             
         </div>
-    <!-- <c:if test ="${requestScope.mensaje != null}"> 
+    <c:if test ="${not empty param.resultado}"> 
         <script type="module">
             import { mostrarAlerta } from '<%= request.getContextPath() %>/js/listaMateriales.js';
-            mostrarAlerta('success', 'Hola');
+            const parametro = "${param.resultado}";
+            mostrarAlerta(
+                    parametro === "success" ? "success" : "error",
+                    parametro === "success" ? "Registro exitoso" : "Error al momento de registrar",
+            );
         </script>
-    </c:if> -->
+    </c:if>
             
     <jsp:include page="listaMateriales.jsp" />
     </body>

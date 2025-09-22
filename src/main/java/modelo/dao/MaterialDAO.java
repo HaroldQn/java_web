@@ -49,4 +49,28 @@ public class MaterialDAO {
         return lista;
     }
     
+    public boolean registrarMaterial(Material material) {
+        PreparedStatement ps;
+        boolean resultado = false;
+
+        String cadSQL = "INSERT INTO material(nombre, cantidad, idcategoria) VALUES (?, ?, ?)";
+
+        try {
+            ps = cnx.prepareStatement(cadSQL);
+            ps.setString(1, material.getNombre());
+            ps.setInt(2, material.getCantidad());
+            ps.setInt(3, material.getCategoria().getIdCategoria());
+
+            int filas = ps.executeUpdate();
+            if (filas > 0) {
+                resultado = true;
+            }
+
+            ps.close();
+        } catch (Exception e) {
+        }
+        return resultado;
+    }
+
+    
 }
