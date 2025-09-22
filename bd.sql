@@ -30,8 +30,10 @@ constraint fk_idcategoria foreign key (idcategoria) references categorias(idcate
 INSERT INTO material(nombre,cantidad,idcategoria)values("SOL",10,1),("ACEROS AREQUIPA",50,2),("INKA",5,1),("LADRILLO",1000,3);
 
 select 
-	c.nombre as 'Categoria',
-    m.nombre as 'Nombre producto',
-    m.cantidad
+	m.idmaterial,
+    m.nombre,
+    m.cantidad,
+    c.idcategoria,
+	c.nombre as 'categoria'
  from material m inner join categorias c on m.idcategoria = c.idcategoria;
 
