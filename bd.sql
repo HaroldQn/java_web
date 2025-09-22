@@ -35,5 +35,7 @@ select
     m.cantidad,
     c.idcategoria,
 	c.nombre as 'categoria'
- from material m inner join categorias c on m.idcategoria = c.idcategoria;
+ from material m inner join categorias c on m.idcategoria = c.idcategoria order by idmaterial;
+ 
+ Delete from material where idcategoria = 2;
 

@@ -18,8 +18,8 @@
                     <td>${m.cantidad}</td>
                     <td>${m.categoria.nombre}</td>
                     <td>
-                        <a href="#" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="#" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a href="<%= request.getContextPath() %>/controladorMateriales?accion=edit&id=${m.idMaterial}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="<%= request.getContextPath() %>/controladorMateriales?accion=delete&id=${m.idMaterial}" class="btn btn-danger btn-sm">Eliminar</a>
                     </td>
                 </tr>
             </c:forEach>

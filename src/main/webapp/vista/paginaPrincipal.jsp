@@ -46,17 +46,18 @@
             </form>
             
         </div>
-    <c:if test ="${not empty param.resultado}"> 
+            
+    <jsp:include page="listaMateriales.jsp" />
+    
+    <c:if test ="${requestScope.mensaje != null}"> 
         <script type="module">
             import { mostrarAlerta } from '<%= request.getContextPath() %>/js/listaMateriales.js';
-            const parametro = "${param.resultado}";
+            const parametro = ${requestScope.mensaje};
             mostrarAlerta(
-                    parametro === "success" ? "success" : "error",
-                    parametro === "success" ? "Registro exitoso" : "Error al momento de registrar",
+                    parametro === true ? "success" : "error",
+                    parametro === true ? "Registro exitoso" : "Error al momento de registrar",
             );
         </script>
     </c:if>
-            
-    <jsp:include page="listaMateriales.jsp" />
     </body>
 </html>

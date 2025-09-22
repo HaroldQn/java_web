@@ -6,11 +6,13 @@ package controladores;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.dao.CategoriaDAO;
 import modelo.dao.MaterialDAO;
 import modelo.dto.Categoria;
 import modelo.dto.Material;
@@ -86,13 +88,17 @@ public class controladorMateriales extends HttpServlet {
             MaterialDAO dao = new MaterialDAO();
             boolean exito = dao.registrarMaterial(nuevo);
             
-            request.setAttribute("resultado", exito);
-            if (exito) {
-                response.sendRedirect(request.getContextPath() + "/ControladorPrincipal?accion=paginaPrincipal&resultado=success");            
-            }else{
-                response.sendRedirect(request.getContextPath() + "/ControladorPrincipal?accion=paginaPrincipal&resultado=error");                       
-            }
-
+            //Categorias
+            List <Categoria> listCat = new CategoriaDAO().getList();
+            request.setAttribute("listaCategoria", listCat);
+            
+            //Materiales
+            List<Material> listMat = new MaterialDAO().getListMateriales();
+            request.setAttribute("listaMateriales", listMat);
+            
+            request.setAttribute("mensaje", exito);           
+            
+            request.getRequestDispatcher("paginaPrincipal.jsp").forward(request, response);
     }
 
     /**

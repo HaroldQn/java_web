@@ -29,7 +29,7 @@ public class MaterialDAO {
         ResultSet rs;
 
         String cadSQL = "select m.idmaterial, m.nombre,m.cantidad,c.idcategoria,c.nombre as 'categoria' " +
-                        "from material m inner join categorias c on m.idcategoria = c.idcategoria;";
+                        "from material m inner join categorias c on m.idcategoria = c.idcategoria order by m.idmaterial;";
 
         List<Material> lista = new ArrayList<>();
 
