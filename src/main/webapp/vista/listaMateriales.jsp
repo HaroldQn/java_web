@@ -10,16 +10,16 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="tb_material">
             <c:forEach var="m" items="${listaMateriales}">
                 <tr>
                     <td>${m.idMaterial}</td>
                     <td>${m.nombre}</td>
                     <td>${m.cantidad}</td>
-                    <td>${m.categoria.nombre}</td>
+                    <td>${m.categoria.nombre}</td
                     <td>
-                        <a href="<%= request.getContextPath() %>/controladorMateriales?accion=edit&id=${m.idMaterial}" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="<%= request.getContextPath() %>/controladorMateriales?accion=delete&id=${m.idMaterial}" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a class="btn btn-warning btn-sm btn-editar" dataset="${m.categoria.idCategoria}">Editar</a>
+                        <a class="btn btn-danger btn-sm btn-eliminar" dataset="${m.categoria.idCategoria}" >Eliminar</a>
                     </td>
                 </tr>
             </c:forEach>

@@ -37,5 +37,8 @@ select
 	c.nombre as 'categoria'
  from material m inner join categorias c on m.idcategoria = c.idcategoria order by idmaterial;
  
- Delete from material where idcategoria = 2;
+ Delete from material where idcategoria = 1;
+ 
+ SHOW CREATE TABLE material;
+
 

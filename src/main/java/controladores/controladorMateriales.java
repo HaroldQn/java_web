@@ -4,15 +4,18 @@
  */
 package controladores;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.dao.CategoriaDAO;
 import modelo.dao.MaterialDAO;
 import modelo.dto.Categoria;
 import modelo.dto.Material;
@@ -22,17 +25,9 @@ import modelo.dto.Material;
  * @author LAB-USR-LNORTE
  */
 @WebServlet(name = "controladorMateriales", urlPatterns = {"/controladorMateriales"})
+@MultipartConfig
 public class controladorMateriales extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -50,65 +45,57 @@ public class controladorMateriales extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        response.setContentType("application/json;charset=UTF-8");
+
+            List<Material> listMat = new MaterialDAO().getListMateriales();
+            String json = new Gson().toJson(listMat);
+
+            try (PrintWriter out = response.getWriter()) {
+                out.print(json);
+            }
+
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            response.setContentType("application/json;charset=UTF-8");
+        
             String nombre = request.getParameter("nombre");
-            int cantidad = Integer.parseInt(request.getParameter("cantidad"));
-            int idCategoria = Integer.parseInt(request.getParameter("categoria"));
-
+            String cantidadStr = request.getParameter("cantidad");
+            String categoriaStr = request.getParameter("categoria");
+            
+            System.out.println("Nombre: " + nombre);
+            System.out.println("Cantidad (string): " + cantidadStr);
+            System.out.println("Categoria (string): " + categoriaStr);
+            
+            int cantidad = Integer.parseInt(cantidadStr);
+            int idCategoria = Integer.parseInt(categoriaStr);
+            
             Material nuevo = new Material();
             nuevo.setNombre(nombre);
             nuevo.setCantidad(cantidad);
             nuevo.setCategoria(new Categoria(idCategoria, null));
 
-            MaterialDAO dao = new MaterialDAO();
-            boolean exito = dao.registrarMaterial(nuevo);
+            boolean exito = new MaterialDAO().registrarMaterial(nuevo);
+            Map<String, Object> resultado = new HashMap<>();
+            resultado.put("success", exito);
             
-            //Categorias
-            List <Categoria> listCat = new CategoriaDAO().getList();
-            request.setAttribute("listaCategoria", listCat);
+            String json = new Gson().toJson(resultado);
             
-            //Materiales
-            List<Material> listMat = new MaterialDAO().getListMateriales();
-            request.setAttribute("listaMateriales", listMat);
-            
-            request.setAttribute("mensaje", exito);           
-            
-            request.getRequestDispatcher("paginaPrincipal.jsp").forward(request, response);
+            try (PrintWriter out = response.getWriter()) {
+                out.print(json);
+            }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
