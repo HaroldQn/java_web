@@ -16,10 +16,10 @@
                     <td>${m.idMaterial}</td>
                     <td>${m.nombre}</td>
                     <td>${m.cantidad}</td>
-                    <td>${m.categoria.nombre}</td
+                    <td data-id="${m.categoria.idCategoria}">${m.categoria.nombre}</td>
                     <td>
-                        <a class="btn btn-warning btn-sm btn-editar" dataset="${m.categoria.idCategoria}">Editar</a>
-                        <a class="btn btn-danger btn-sm btn-eliminar" dataset="${m.categoria.idCategoria}" >Eliminar</a>
+                        <button class="btn btn-warning btn-sm btn-editar" data-id="${m.categoria.idCategoria}">Editar</button>
+                        <button class="btn btn-danger btn-sm btn-eliminar" data-id="${m.categoria.idCategoria}" >Eliminar</button>
                     </td>
                 </tr>
             </c:forEach>

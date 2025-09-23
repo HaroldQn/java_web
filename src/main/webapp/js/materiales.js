@@ -2,8 +2,7 @@ import { toast } from "./exports/sweet.js";
 
 const form = document.getElementById("formMateriales");
 const tbody = document.getElementById("tb_material");
-let btn_editar = document.querySelectorAll(".btn-editar");
-const URL = "http://localhost:8082/ProyectoPROGWEB/controladorMateriales";
+const URL = "http://localhost:8081/ProyectoPROGWEB/controladorMateriales";
 
 async function registrarMaterial(){
     const parametros = new URLSearchParams(new FormData(form));
@@ -31,7 +30,7 @@ async function listarMateriales(){
                 <td>${idMaterial}</td>
                 <td>${nombre}</td>
                 <td>${cantidad}</td>
-                <td>${categoria.nombre}</td>
+                <td data-id="${categoria.idCategoria}" >${categoria.nombre}</td>
                 <td>
                     <a href="" class="btn btn-warning btn-sm">Editar</a>
                     <a href="" class="btn btn-danger btn-sm">Eliminar</a>
@@ -47,38 +46,30 @@ form.addEventListener("submit", async (e)=>{
 });
 
 tbody.addEventListener("click", (e) => {
-  e.preventDefault(); // evita que el <a href=""> recargue la página
-  
-  const boton = e.target.closest("a"); // busca si el click vino de un <a>
-  if (!boton) return; // si no fue un <a>, no hacemos nada
+  const button = e.target.closest("button");
+  if (!button) return;
 
-  // Caso: Editar
-  if (boton.classList.contains("btn-warning")) {
-    const fila = boton.closest("tr");  
+  //Editar
+  if (button.classList.contains("btn-warning")) {
+    const fila = button.closest("tr");  
     const celdas = fila.querySelectorAll("td");
+    const id = celdas[0].innerText;
+    const nombre = celdas[1].innerText;
+    const cantidad = celdas[2].innerText;
+    const categoria = celdas[3].dataset.id;
 
-    const id = celdas[0].innerText;       // idMaterial
-    const nombre = celdas[1].innerText;   // nombre
-    const cantidad = celdas[2].innerText; // cantidad
-    const categoria = celdas[3].innerText;// nombre de categoría
-
-    document.getElementById("id_producto").value = id;
-    document.getElementById("nombre_producto").value = nombre;
-    document.getElementById("cantidad_producto").value = cantidad;
-    document.getElementById("categoria_producto").value = categoria;
-
-    toast("info", `Editando material ${nombre}`);
+    console.log(id, nombre, cantidad, categoria);
   }
 
-  // Caso: Eliminar
-  if (boton.classList.contains("btn-danger")) {
+  // Eliminar
+  /** if (boton.classList.contains("btn-danger")) {
     const fila = boton.closest("tr");
     const id = fila.querySelector("td").innerText;
 
     if (confirm(`¿Seguro que quieres eliminar el material con ID ${id}?`)) {
       eliminarMaterial(id);
     }
-  }
+  } */
 });
 
 
