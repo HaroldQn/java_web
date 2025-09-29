@@ -16,23 +16,14 @@ import servicios.conectaDB;
  *
  * @author LAB-USR-LNORTE
  */
-public class CategoriaDAO{
-    private Connection cnx;
-
-    public CategoriaDAO() {
-        cnx = conectaDB.getConection();
-    }
-    
+public class CategoriaDAO{ 
     public List<Categoria> getList(){
-        PreparedStatement ps;
-        ResultSet rs;
         String cadSQL = "SELECT * FROM categorias;";
-        List<Categoria> lista = null;
-        try {
-            ps = cnx.prepareStatement(cadSQL);
-            rs = ps.executeQuery();
-            lista = new ArrayList<>();
-            System.out.println("test");
+        List<Categoria> lista = new ArrayList<>();
+        try(Connection cnx = conectaDB.getConection(); 
+            PreparedStatement ps = cnx.prepareStatement(cadSQL);
+            ) {
+            ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 Categoria c = new Categoria(
                         rs.getInt("idcategoria"),

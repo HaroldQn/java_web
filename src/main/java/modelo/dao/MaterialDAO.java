@@ -18,24 +18,17 @@ import modelo.dto.Material;
  * @author efrai
  */
 public class MaterialDAO {
-    private Connection cnx;
-
-    public MaterialDAO() {
-        cnx = conectaDB.getConection();
-    }
     
     public List<Material> getListMateriales(){
-        PreparedStatement ps;
-        ResultSet rs;
-
         String cadSQL = "select m.idmaterial, m.nombre,m.cantidad,c.idcategoria,c.nombre as 'categoria' " +
                         "from material m inner join categorias c on m.idcategoria = c.idcategoria order by m.idmaterial;";
 
         List<Material> lista = new ArrayList<>();
 
-        try {
-            ps = cnx.prepareStatement(cadSQL);
-            rs = ps.executeQuery();
+        try (Connection cnx = conectaDB.getConection();
+            PreparedStatement ps = cnx.prepareStatement(cadSQL);
+            ){
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 Material m = new Material(
                     rs.getInt("idmaterial"),
@@ -54,7 +47,9 @@ public class MaterialDAO {
 
         String cadSQL = "INSERT INTO material(nombre, cantidad, idcategoria) VALUES (?, ?, ?)";
 
-        try (PreparedStatement ps = cnx.prepareStatement(cadSQL)) {
+        try (   Connection cnx = conectaDB.getConection();
+                PreparedStatement ps = cnx.prepareStatement(cadSQL)
+                ) {
             ps.setString(1, material.getNombre());
             ps.setInt(2, material.getCantidad());
 
@@ -79,7 +74,9 @@ public class MaterialDAO {
 
         String cadSQL = "UPDATE material SET nombre = ?, cantidad = ?, idcategoria = ? WHERE idmaterial = ?";
 
-        try (PreparedStatement ps = cnx.prepareStatement(cadSQL)) {
+        try (   Connection cnx = conectaDB.getConection();
+                PreparedStatement ps = cnx.prepareStatement(cadSQL)
+                ) {
             ps.setString(1, material.getNombre());
             ps.setInt(2, material.getCantidad());
             ps.setInt(3, material.getCategoria().getIdCategoria());
@@ -95,8 +92,11 @@ public class MaterialDAO {
     }
     
     public boolean eliminarMaterial(int idMaterial) {
+        System.err.println(idMaterial);
         String sql = "DELETE FROM material WHERE idmaterial = ?";
-        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+        try (   Connection cnx = conectaDB.getConection();
+                PreparedStatement ps = cnx.prepareStatement(sql)
+                ) {
             ps.setInt(1, idMaterial);
             int filas = ps.executeUpdate();
             return filas > 0;

@@ -91,15 +91,11 @@ public class controladorMateriales extends HttpServlet {
             } 
             else if ("editar".equals(accion)) {
                 String idStr = request.getParameter("idmaterial");
-                String nombre = request.getParameter("nom_producto_editar");
-                String cantidadStr = request.getParameter("cant_producto_editar");
-                String categoriaStr = request.getParameter("cat_producto_editar");
-                System.out.println(idStr);
-                System.out.println(nombre);
-                System.out.println(cantidadStr);
-                System.out.println(categoriaStr);
+                String nombre = request.getParameter("nombre");
+                String cantidadStr = request.getParameter("cantidad");
+                String categoriaStr = request.getParameter("categoria");
 
-                int idMaterial = Integer.parseInt(idStr);
+                int idMaterial = Integer.parseInt(idStr.equals("") ? "0" : idStr);
                 int cantidad = Integer.parseInt(cantidadStr);
                 int idCategoria = Integer.parseInt(categoriaStr);
 
@@ -133,7 +129,11 @@ public class controladorMateriales extends HttpServlet {
         }
     }
 
-
+    public boolean insertUpdate(Material m){
+        
+        return false;
+    }
+    
     @Override
     public String getServletInfo() {
         return "Short description";

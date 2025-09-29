@@ -18,15 +18,15 @@
                 <input type="hidden" name="idmaterial" id="idMaterial">
                 <div>
                     <label>Nombre del Producto*</label>
-                    <input type="text" class="form-control" name="nom_producto_editar" id="nom_producto_editar" required>
+                    <input type="text" class="form-control" name="nombre" id="nom_producto_editar" required>
                 </div>
                 <div>
                     <label>Cantidad del Producto*</label>
-                    <input type="number" class="form-control" name="cant_producto_editar" id="cant_producto_editar" required>
+                    <input type="number" class="form-control" name="cantidad" id="cant_producto_editar" required>
                 </div>
                 <div>
                     <label>Categooria*</label>
-                    <select  class="form-select" name="cat_producto_editar" id="cat_producto_editar">
+                    <select  class="form-select" name="categoria" id="cat_producto_editar">
                       <option value="">------Seleccione------</option>
                       <c:forEach var="cat" items="${listaCategoria}">
                           <option value="${cat.idCategoria}">${cat.nombre}</option>

@@ -13,13 +13,13 @@
         <tbody id="tb_material">
             <c:forEach var="m" items="${listaMateriales}" varStatus="status">
                 <tr>
-                    <td>${status.index + 1}</td>
+                    <td data-idmaterial="${m.idMaterial}" >${status.index + 1}</td>
                     <td>${m.nombre}</td>
-                    <td>${m.cantidad}</td>
+                    <td class="text-end" >${m.cantidad}</td>
                     <td data-id="${m.categoria.idCategoria}">${m.categoria.nombre}</td>
-                    <td>
-                        <button data-accion="editar"  class="btn btn-warning btn-sm">Editar</button>
-                        <button data-accion="eliminar" class="btn btn-danger btn-sm">Eliminar</button>
+                    <td class="text-center">
+                        <button data-accion="editar"  class="btn btn-warning btn-sm"><i class="bi bi-pencil-fill"></i></button>
+                        <button data-accion="eliminar" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
                     </td>
                 </tr>
             </c:forEach>

@@ -6,7 +6,7 @@ const form_modal = document.getElementById("form_modal");
 
 const tbody = document.getElementById("tb_material");
 const modalEditar = new bootstrap.Modal(document.getElementById("modal_editar"));
-const URL = "http://localhost:8082/ProyectoPROGWEB/controladorMateriales";
+const URL = "http://localhost:8081/ProyectoPROGWEB/controladorMateriales";
 
 // Inputs Modal editar
 const idMaterial = document.getElementById("idMaterial");
@@ -37,13 +37,17 @@ async function listarMateriales(){
     tbody.innerHTML = "";
     const render = data.map(({ idMaterial, nombre, cantidad, categoria }, i) => `
             <tr>
-                <td>${i + 1}</td>
+                <td data-idmaterial=${idMaterial} >${i + 1}</td>
                 <td>${nombre}</td>
-                <td>${cantidad}</td>
+                <td class="text-end" >${cantidad}</td>
                 <td data-id="${categoria.idCategoria}" >${categoria.nombre}</td>
-                <td>
-                    <button data-accion="editar" class="btn btn-warning btn-sm">Editar</button>
-                    <button data-accion="eliminar"  class="btn btn-danger btn-sm">Eliminar</button>
+                <td class="text-center" >
+                    <button data-accion="editar" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil-fill"></i>
+                    </button>
+                    <button data-accion="eliminar"  class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </button>
                 </td>
             </tr>
         `).join("");
@@ -63,7 +67,7 @@ async function eliminarMaterial(idMaterial) {
 
 function abrirModalEditar(fila) {
   const celdas = fila.querySelectorAll("td");
-  const id = celdas[0].innerText;
+  const id = celdas[0].dataset.idmaterial;
   const nombre = celdas[1].innerText;
   const cantidad = celdas[2].innerText;
   const categoria = celdas[3].dataset.id;
@@ -95,7 +99,8 @@ tbody.addEventListener("click", (e) => {
 
   if (accion === "editar") abrirModalEditar(fila);
   if (accion === "eliminar"){
-        const id = fila.querySelector("td").innerText;
+        const celdas = fila.querySelectorAll("td");
+        const id = celdas[0].dataset.idmaterial;
         Preguntar(
                 ()=>eliminarMaterial(id),
                 "¿Deseas eliminar el producto?",
