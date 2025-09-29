@@ -64,34 +64,75 @@ public class controladorMateriales extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            response.setContentType("application/json;charset=UTF-8");
-        
-            String nombre = request.getParameter("nombre");
-            String cantidadStr = request.getParameter("cantidad");
-            String categoriaStr = request.getParameter("categoria");
-            
-            System.out.println("Nombre: " + nombre);
-            System.out.println("Cantidad (string): " + cantidadStr);
-            System.out.println("Categoria (string): " + categoriaStr);
-            
-            int cantidad = Integer.parseInt(cantidadStr);
-            int idCategoria = Integer.parseInt(categoriaStr);
-            
-            Material nuevo = new Material();
-            nuevo.setNombre(nombre);
-            nuevo.setCantidad(cantidad);
-            nuevo.setCategoria(new Categoria(idCategoria, null));
+        response.setContentType("application/json;charset=UTF-8");
 
-            boolean exito = new MaterialDAO().registrarMaterial(nuevo);
-            Map<String, Object> resultado = new HashMap<>();
-            resultado.put("success", exito);
-            
-            String json = new Gson().toJson(resultado);
-            
-            try (PrintWriter out = response.getWriter()) {
-                out.print(json);
+        String accion = request.getParameter("accion");
+        System.out.println(accion);
+        Map<String, Object> resultado = new HashMap<>();
+
+        try {
+            if ("registrar".equals(accion)) {
+                String nombre = request.getParameter("nombre");
+                String cantidadStr = request.getParameter("cantidad");
+                String categoriaStr = request.getParameter("categoria");
+                System.out.println(nombre);
+                System.out.println(cantidadStr);
+                System.out.println(categoriaStr);
+                int cantidad = Integer.parseInt(cantidadStr);
+                int idCategoria = Integer.parseInt(categoriaStr);
+
+                Material nuevo = new Material();
+                nuevo.setNombre(nombre);
+                nuevo.setCantidad(cantidad);
+                nuevo.setCategoria(new Categoria(idCategoria, null));
+
+                boolean exito = new MaterialDAO().registrarMaterial(nuevo);
+                resultado.put("success", exito);
+            } 
+            else if ("editar".equals(accion)) {
+                String idStr = request.getParameter("idmaterial");
+                String nombre = request.getParameter("nom_producto_editar");
+                String cantidadStr = request.getParameter("cant_producto_editar");
+                String categoriaStr = request.getParameter("cat_producto_editar");
+                System.out.println(idStr);
+                System.out.println(nombre);
+                System.out.println(cantidadStr);
+                System.out.println(categoriaStr);
+
+                int idMaterial = Integer.parseInt(idStr);
+                int cantidad = Integer.parseInt(cantidadStr);
+                int idCategoria = Integer.parseInt(categoriaStr);
+
+                Material m = new Material();
+                m.setIdMaterial(idMaterial);
+                m.setNombre(nombre);
+                m.setCantidad(cantidad);
+                m.setCategoria(new Categoria(idCategoria, null));
+
+                boolean exito = new MaterialDAO().editarMaterial(m);
+                resultado.put("success", exito);
             }
+            else if ("eliminar".equals(accion)) {
+                String idStr = request.getParameter("idMaterial");
+                System.out.println("Eliminar id: " + idStr);
+
+                int idMaterial = Integer.parseInt(idStr);
+
+                boolean exito = new MaterialDAO().eliminarMaterial(idMaterial);
+                resultado.put("success", exito);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultado.put("success", false);
+        }
+
+        String json = new Gson().toJson(resultado);
+        try (PrintWriter out = response.getWriter()) {
+            out.print(json);
+        }
     }
+
 
     @Override
     public String getServletInfo() {

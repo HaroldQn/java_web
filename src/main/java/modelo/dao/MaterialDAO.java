@@ -73,6 +73,41 @@ public class MaterialDAO {
 
         return resultado;
     }
+    
+    public boolean editarMaterial(Material material) {
+        boolean resultado = false;
+
+        String cadSQL = "UPDATE material SET nombre = ?, cantidad = ?, idcategoria = ? WHERE idmaterial = ?";
+
+        try (PreparedStatement ps = cnx.prepareStatement(cadSQL)) {
+            ps.setString(1, material.getNombre());
+            ps.setInt(2, material.getCantidad());
+            ps.setInt(3, material.getCategoria().getIdCategoria());
+            ps.setInt(4, material.getIdMaterial());
+
+            int filas = ps.executeUpdate();
+            resultado = (filas > 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    }
+    
+    public boolean eliminarMaterial(int idMaterial) {
+        String sql = "DELETE FROM material WHERE idmaterial = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(sql)) {
+            ps.setInt(1, idMaterial);
+            int filas = ps.executeUpdate();
+            return filas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
 
 
     

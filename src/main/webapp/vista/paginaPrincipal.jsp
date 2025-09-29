@@ -48,6 +48,10 @@
         </div>
             
     <jsp:include page="listaMateriales.jsp" />
+    <jsp:include page="components/modal_editar.jsp" />
+    
+    
+
     
     <script type="module" src="${pageContext.request.contextPath}/js/materiales.js"></script>
     </body>

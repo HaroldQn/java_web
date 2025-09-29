@@ -11,15 +11,15 @@
             </tr>
         </thead>
         <tbody id="tb_material">
-            <c:forEach var="m" items="${listaMateriales}">
+            <c:forEach var="m" items="${listaMateriales}" varStatus="status">
                 <tr>
-                    <td>${m.idMaterial}</td>
+                    <td>${status.index + 1}</td>
                     <td>${m.nombre}</td>
                     <td>${m.cantidad}</td>
                     <td data-id="${m.categoria.idCategoria}">${m.categoria.nombre}</td>
                     <td>
-                        <button class="btn btn-warning btn-sm btn-editar" data-id="${m.categoria.idCategoria}">Editar</button>
-                        <button class="btn btn-danger btn-sm btn-eliminar" data-id="${m.categoria.idCategoria}" >Eliminar</button>
+                        <button data-accion="editar"  class="btn btn-warning btn-sm">Editar</button>
+                        <button data-accion="eliminar" class="btn btn-danger btn-sm">Eliminar</button>
                     </td>
                 </tr>
             </c:forEach>

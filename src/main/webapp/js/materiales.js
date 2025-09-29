@@ -1,23 +1,33 @@
-import { toast } from "./exports/sweet.js";
+import { toast, Preguntar } from "./exports/sweet.js";
+import { enviarPeticionPost } from "./exports/post_component.js";
 
 const form = document.getElementById("formMateriales");
+const form_modal = document.getElementById("form_modal");
+
 const tbody = document.getElementById("tb_material");
-const URL = "http://localhost:8081/ProyectoPROGWEB/controladorMateriales";
+const modalEditar = new bootstrap.Modal(document.getElementById("modal_editar"));
+const URL = "http://localhost:8082/ProyectoPROGWEB/controladorMateriales";
 
-async function registrarMaterial(){
-    const parametros = new URLSearchParams(new FormData(form));
+// Inputs Modal editar
+const idMaterial = document.getElementById("idMaterial");
+const tituloModal = document.getElementById("titulo_modal");
+const nomProductoEditar = document.getElementById("nom_producto_editar");
+const cantProductoEditar = document.getElementById("cant_producto_editar");
+const catProductoEditar = document.getElementById("cat_producto_editar");
 
-    const res = await fetch(URL, { 
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: parametros.toString() 
-    });
-
-    const data = await res.json();
-    const { success } = data;
+async function registrarMaterial(formulario_enviar){
+    const success = await enviarPeticionPost(formulario_enviar, "registrar", URL);
     success ? 
         (toast("success", "Registrado Correctamente"), listarMateriales(), form.reset()) :
         toast("warning", "Error al registrar");
+    
+}
+
+async function editarProducto(formulario_enviar){
+    const success = await enviarPeticionPost(formulario_enviar, "editar", URL);
+    success ? 
+        (toast("success", "Actualizado Correctamente"), listarMateriales(), form_modal.reset()) :
+        toast("warning", "Error al actualizar");
 }
 
 async function listarMateriales(){
@@ -25,51 +35,73 @@ async function listarMateriales(){
     const data = await res.json();
     
     tbody.innerHTML = "";
-    const render = data.map(({ idMaterial, nombre, cantidad, categoria }) => `
+    const render = data.map(({ idMaterial, nombre, cantidad, categoria }, i) => `
             <tr>
-                <td>${idMaterial}</td>
+                <td>${i + 1}</td>
                 <td>${nombre}</td>
                 <td>${cantidad}</td>
                 <td data-id="${categoria.idCategoria}" >${categoria.nombre}</td>
                 <td>
-                    <a href="" class="btn btn-warning btn-sm">Editar</a>
-                    <a href="" class="btn btn-danger btn-sm">Eliminar</a>
+                    <button data-accion="editar" class="btn btn-warning btn-sm">Editar</button>
+                    <button data-accion="eliminar"  class="btn btn-danger btn-sm">Eliminar</button>
                 </td>
             </tr>
         `).join("");
     tbody.innerHTML = render;
 }
 
+async function eliminarMaterial(idMaterial) {
+  const formT = new FormData();
+  formT.append("idMaterial", idMaterial);
+
+  const success = await enviarPeticionPost(formT, "eliminar", URL);
+  success
+    ? (toast("success", "Eliminado correctamente"), listarMateriales())
+    : toast("warning", "Error al eliminar");
+}
+
+
+function abrirModalEditar(fila) {
+  const celdas = fila.querySelectorAll("td");
+  const id = celdas[0].innerText;
+  const nombre = celdas[1].innerText;
+  const cantidad = celdas[2].innerText;
+  const categoria = celdas[3].dataset.id;
+
+  tituloModal.innerText = "Editar producto: " + nombre;
+  idMaterial.value = id;
+  nomProductoEditar.value = nombre;
+  cantProductoEditar.value = cantidad;
+  catProductoEditar.value = categoria;
+  modalEditar.show();
+}
+
 form.addEventListener("submit", async (e)=>{
     e.preventDefault();
-    await registrarMaterial();
+    await registrarMaterial(form);
+});
+form_modal.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    await editarProducto(form_modal);
+    modalEditar.hide();
 });
 
+
 tbody.addEventListener("click", (e) => {
-  const button = e.target.closest("button");
-  if (!button) return;
+  const accion = e.target.dataset.accion;
+  if (!accion) return;
 
-  //Editar
-  if (button.classList.contains("btn-warning")) {
-    const fila = button.closest("tr");  
-    const celdas = fila.querySelectorAll("td");
-    const id = celdas[0].innerText;
-    const nombre = celdas[1].innerText;
-    const cantidad = celdas[2].innerText;
-    const categoria = celdas[3].dataset.id;
+  const fila = e.target.closest("tr");
 
-    console.log(id, nombre, cantidad, categoria);
-  }
-
-  // Eliminar
-  /** if (boton.classList.contains("btn-danger")) {
-    const fila = boton.closest("tr");
-    const id = fila.querySelector("td").innerText;
-
-    if (confirm(`¿Seguro que quieres eliminar el material con ID ${id}?`)) {
-      eliminarMaterial(id);
-    }
-  } */
+  if (accion === "editar") abrirModalEditar(fila);
+  if (accion === "eliminar"){
+        const id = fila.querySelector("td").innerText;
+        Preguntar(
+                ()=>eliminarMaterial(id),
+                "¿Deseas eliminar el producto?",
+                "question"
+        );
+  };
 });
 
 
